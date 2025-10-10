@@ -309,6 +309,20 @@ function initTouchSupport() {
     }
 }
 
+// Scroll to specific section
+function scrollToSection(sectionId) {
+    const targetSection = document.querySelector(`.${sectionId}`);
+    if (targetSection) {
+        const headerHeight = document.querySelector('.header').offsetHeight;
+        const targetPosition = targetSection.offsetTop - headerHeight - 50; // 50px 추가 여백
+        
+        window.scrollTo({
+            top: targetPosition,
+            behavior: 'smooth'
+        });
+    }
+}
+
 // Initialize additional features
 document.addEventListener('DOMContentLoaded', function() {
     initScrollAnimations();
