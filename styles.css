@@ -127,8 +127,8 @@ body {
 /* Main Banner */
 .main-banner {
     position: relative;
-    height: calc(45vh - 40px);
-    margin-top: 100px;
+    height: calc(49vh - 48px);
+    margin-top: 80px;
     overflow: hidden;
     margin-bottom: 0;
 }
