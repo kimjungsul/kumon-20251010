@@ -411,10 +411,14 @@ body {
     padding: 40px 20px;
     border-radius: 10px;
     transition: transform 0.3s;
+    cursor: pointer;
+    border: 2px solid transparent;
 }
 
 .recruitment-card:hover {
     transform: translateY(-5px);
+    border-color: #e74c3c;
+    box-shadow: 0 5px 20px rgba(231, 76, 60, 0.2);
 }
 
 .card-icon {
@@ -474,10 +478,12 @@ body {
     overflow: hidden;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     transition: transform 0.3s;
+    cursor: pointer;
 }
 
 .feature-card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
 .feature-image {

@@ -152,9 +152,19 @@ function initVideoCards() {
     });
 }
 
-// Video Modal (placeholder)
+// Video Modal with actual video player
 function showVideoModal(card) {
     const videoTitle = card.querySelector('h3').textContent;
+    let videoUrl = '';
+    
+    // Set video URL based on title
+    if (videoTitle.includes('구몬선생님 생생 인터뷰')) {
+        videoUrl = 'https://tkep.kyowon.co.kr/kumon/down/kumon/bbs/0011/구몬선생님생생인터뷰_5차.mp4';
+    } else if (videoTitle.includes('선배선생님의 솔직 경험담!')) {
+        videoUrl = 'https://tkep.kyowon.co.kr/kumon/down/kumon/bbs/0011/vid_a.mp4';
+    } else if (videoTitle.includes('사람을 키우는 사람')) {
+        videoUrl = 'https://tkep.kyowon.co.kr/kumon/vod/kumon/bbs/0011/435.mp4';
+    }
     
     // Create modal
     const modal = document.createElement('div');
@@ -164,9 +174,18 @@ function showVideoModal(card) {
             <div class="modal-content">
                 <button class="modal-close">&times;</button>
                 <h3>${videoTitle}</h3>
-                <div class="video-placeholder">
-                    <i class="fas fa-play-circle"></i>
-                    <p>동영상 재생 기능</p>
+                <div class="video-container">
+                    ${videoUrl ? `
+                        <video controls width="100%" height="auto">
+                            <source src="${videoUrl}" type="video/mp4">
+                            <p>브라우저가 비디오를 지원하지 않습니다.</p>
+                        </video>
+                    ` : `
+                        <div class="video-placeholder">
+                            <i class="fas fa-play-circle"></i>
+                            <p>동영상 준비 중입니다.</p>
+                        </div>
+                    `}
                 </div>
             </div>
         </div>
@@ -182,6 +201,11 @@ function showVideoModal(card) {
     overlay.addEventListener('click', closeModal);
     
     function closeModal() {
+        // Pause video before closing
+        const video = modal.querySelector('video');
+        if (video) {
+            video.pause();
+        }
         document.body.removeChild(modal);
     }
 }
@@ -372,9 +396,23 @@ const additionalStyles = `
         background: white;
         padding: 30px;
         border-radius: 10px;
-        max-width: 600px;
+        max-width: 800px;
         width: 90%;
         position: relative;
+    }
+    
+    .video-container {
+        margin-top: 20px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .video-container video {
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 60vh;
     }
     
     .modal-close {
