@@ -175,12 +175,12 @@ function showVideoModal(card) {
                 <button class="modal-close">&times;</button>
                 <h3>${videoTitle}</h3>
                 <div class="video-container">
-                    ${videoUrl ? `
-                        <video controls width="100%" height="auto">
-                            <source src="${videoUrl}" type="video/mp4">
-                            <p>브라우저가 비디오를 지원하지 않습니다.</p>
-                        </video>
-                    ` : `
+                        ${videoUrl ? `
+                            <video controls width="100%" height="auto" autoplay muted>
+                                <source src="${videoUrl}" type="video/mp4">
+                                <p>브라우저가 비디오를 지원하지 않습니다.</p>
+                            </video>
+                        ` : `
                         <div class="video-placeholder">
                             <i class="fas fa-play-circle"></i>
                             <p>동영상 준비 중입니다.</p>
