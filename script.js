@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initSmoothScrolling();
     initVideoCards();
     initScrollToTop();
-    initLogoUploader();
+    // 로고 업로드 기능 제거
     initMapModal();
 });
 
@@ -237,39 +237,7 @@ function initScrollToTop() {
     }
 }
 
-// Logo Uploader (PNG -> Base64 Data URL)
-function initLogoUploader() {
-    const fileInput = document.getElementById('logoUploader');
-    const logoImg = document.getElementById('siteLogo');
-    const linkEl = document.getElementById('logoDataLink');
-    if (!fileInput || !logoImg) return;
-
-    fileInput.addEventListener('change', function() {
-        const file = this.files && this.files[0];
-        if (!file) return;
-        if (file.type !== 'image/png') {
-            alert('PNG 파일만 업로드할 수 있습니다.');
-            this.value = '';
-            return;
-        }
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const dataUrl = String(e.target.result || '');
-            if (!dataUrl.startsWith('data:image/png')) {
-                alert('이미지 변환에 실패했습니다.');
-                return;
-            }
-            // 적용: 로고 이미지 교체
-            logoImg.src = dataUrl;
-            // 링크 노출: 새 탭에서 이미지 열기
-            if (linkEl) {
-                linkEl.href = dataUrl;
-                linkEl.style.display = 'inline-block';
-            }
-        };
-        reader.readAsDataURL(file);
-    });
-}
+// initLogoUploader 제거
 
 // Logo error handler: show visible placeholder and log details
 function handleLogoError(e) {
@@ -306,17 +274,21 @@ function initMapModal() {
                 <div class="map-content">
                     <div class="map-header">
                         <h3>근무위치 보기</h3>
+                        <div class="map-tabs">
+                            <button class="map-tab active" data-target="left">주소 1</button>
+                            <button class="map-tab" data-target="right">주소 2</button>
+                        </div>
                         <button class="map-close" aria-label="닫기">&times;</button>
                     </div>
                     <div class="map-body">
-                        <div class="map-panel">
+                        <div class="map-panel" id="panel-left">
                             <div class="addr-box overlay">
                                 <div class="label">주소 1</div>
                                 <div>경기도 안양시 동안구 비산동</div>
                             </div>
                             <div id="mapLeft" class="map-view"></div>
                         </div>
-                        <div class="map-panel">
+                        <div class="map-panel" id="panel-right">
                             <div class="addr-box overlay">
                                 <div class="label">주소 2</div>
                                 <div>경기도 안양시 동안구 관양동</div>
@@ -337,6 +309,34 @@ function initMapModal() {
 
         // initialize maps
         setupMaps('mapLeft', 'mapRight');
+
+        // Mobile tabs behavior
+        const tabs = modal.querySelectorAll('.map-tab');
+        const leftPanel = modal.querySelector('#panel-left');
+        const rightPanel = modal.querySelector('#panel-right');
+        const updatePanels = (target) => {
+            if (window.innerWidth <= 768) {
+                if (target === 'left') {
+                    leftPanel.classList.add('active');
+                    rightPanel.classList.remove('active');
+                } else {
+                    rightPanel.classList.add('active');
+                    leftPanel.classList.remove('active');
+                }
+            } else {
+                leftPanel.classList.add('active');
+                rightPanel.classList.add('active');
+            }
+        };
+        tabs.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                btn.classList.add('active');
+                updatePanels(btn.dataset.target);
+            });
+        });
+        // initial state
+        updatePanels('left');
     };
 
     function setupMaps(leftId, rightId) {

@@ -82,27 +82,7 @@ body {
     gap: 20px;
 }
 
-.logo-tools {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.logo-upload-btn {
-    background: #222;
-    color: #fff;
-    border: 1px solid #444;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 13px;
-}
-
-.logo-data-link {
-    color: #fff;
-    font-size: 13px;
-    text-decoration: underline;
-}
+/* 로고 업로드 UI 제거로 관련 스타일 삭제 */
 
 .utils-links {
     display: flex;
@@ -147,7 +127,7 @@ body {
 /* Main Banner */
 .main-banner {
     position: relative;
-    height: calc(49vh - 48px);
+    height: calc(39vh - 48px);
     margin-top: 80px;
     overflow: hidden;
     margin-bottom: 0;
@@ -422,7 +402,8 @@ body {
 
 .recruitment-cards {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 340px));
+    justify-content: center;
     gap: 30px;
 }
 
@@ -538,6 +519,43 @@ body {
 
 .map-badge.right {
     background: #e6a371;
+}
+
+.map-tabs {
+    display: none;
+    gap: 8px;
+}
+
+.map-tab {
+    background: #e9eef7;
+    color: #1f2937;
+    border: 1px solid #cbd5e1;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.map-tab.active {
+    background: #1a73e8;
+    color: #fff;
+    border-color: #1a73e8;
+}
+
+@media (max-width: 768px) {
+    .map-body {
+        grid-template-columns: 1fr;
+    }
+    .map-tabs {
+        display: flex;
+    }
+    .map-panel {
+        display: none;
+        min-height: 60vh;
+    }
+    .map-panel.active {
+        display: block;
+    }
 }
 
 /* Center separator */
