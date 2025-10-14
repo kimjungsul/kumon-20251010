@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>구몬 선생님 모집</title>
+    <title>구몬학습 관양지국 선생님 모집</title>
     <link rel="stylesheet" href="styles.css">
 
 
@@ -16,9 +16,9 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo-section">
-                    <div class="logo">
-                        <span class="logo-text">구몬</span>
-                    </div>
+                    <a class="logo" href="/">
+                        <img id="siteLogo" src="kumon-logo.png" alt="구몬 로고" width="60" height="60" data-base-src="kumon-logo.png" onerror="handleLogoError(event)">
+                    </a>
                     <nav class="main-nav">
                         <ul>
                             <li><a href="https://www.kyowon.co.kr/#COMPANY" target="_blank">회사소개</a></li>
@@ -30,6 +30,13 @@
                 </div>
                 <div class="header-utils">
                     <button class="consultation-btn" onclick="window.open('https://recruit.kumon.co.kr/Recruit/Apply', '_blank')">지원하기기</button>
+                    <div class="logo-tools">
+                        <label class="logo-upload-btn">
+                            <input type="file" id="logoUploader" accept="image/png" hidden>
+                            로고 업로드
+                        </label>
+                        <a id="logoDataLink" class="logo-data-link" href="#" target="_blank" rel="noopener" style="display:none">링크열기</a>
+                    </div>
                 </div>
                 <button class="mobile-menu-btn">
                     <i class="fas fa-bars"></i>
@@ -137,6 +144,14 @@
                     <p>채용 문의를 카카오톡으로 상담하세요.</p>
                 </div>
 
+                <div class="recruitment-card" onclick="showMapModal()">
+                    <div class="card-icon map">
+                        <i class="fas fa-location-dot" aria-hidden="true"></i>
+                    </div>
+                    <h3>근무위치 보기</h3>
+                    <p>지도에서 근무위치를 확인하세요.</p>
+                </div>
+
             </div>
         </div>
     </section>
@@ -193,7 +208,7 @@
         <div class="footer-bottom">
             <div class="container">
                 <div class="company-info">
-                    <p>서울시 중구 을지로 51 (을지로2가 6번지) (주)교원구몬 통신판매업 신고 : 제 2020-서울중구-1461호</p>
+                    <p>경기도 안양시 관악대로 359 부흥빌딩 4층 구몬학습 (주)교원구몬 통신판매업 신고 : 제 2020-서울중구-1461호</p>
                 </div>
                 <div class="copyright">
                     <p>Copyright© KYOWON KUMON. All Right Reserved</p>

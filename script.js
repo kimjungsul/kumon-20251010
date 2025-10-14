@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     initSmoothScrolling();
     initVideoCards();
     initScrollToTop();
+    initLogoUploader();
+    initMapModal();
 });
 
 // Mobile Menu Toggle
@@ -235,6 +237,141 @@ function initScrollToTop() {
     }
 }
 
+// Logo Uploader (PNG -> Base64 Data URL)
+function initLogoUploader() {
+    const fileInput = document.getElementById('logoUploader');
+    const logoImg = document.getElementById('siteLogo');
+    const linkEl = document.getElementById('logoDataLink');
+    if (!fileInput || !logoImg) return;
+
+    fileInput.addEventListener('change', function() {
+        const file = this.files && this.files[0];
+        if (!file) return;
+        if (file.type !== 'image/png') {
+            alert('PNG 파일만 업로드할 수 있습니다.');
+            this.value = '';
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const dataUrl = String(e.target.result || '');
+            if (!dataUrl.startsWith('data:image/png')) {
+                alert('이미지 변환에 실패했습니다.');
+                return;
+            }
+            // 적용: 로고 이미지 교체
+            logoImg.src = dataUrl;
+            // 링크 노출: 새 탭에서 이미지 열기
+            if (linkEl) {
+                linkEl.href = dataUrl;
+                linkEl.style.display = 'inline-block';
+            }
+        };
+        reader.readAsDataURL(file);
+    });
+}
+
+// Logo error handler: show visible placeholder and log details
+function handleLogoError(e) {
+    const img = e.target;
+    const originalSrc = img.getAttribute('data-base-src') || img.src;
+    console.error('[Logo] 이미지 로드 실패:', { src: originalSrc });
+    // cache-busting 재시도
+    const cacheBusted = `${originalSrc}?v=${Date.now()}`;
+    if (!img.dataset.retry) {
+        img.dataset.retry = '1';
+        img.src = cacheBusted;
+        return;
+    }
+    // 실패 시 눈에 보이는 플레이스홀더 표시
+    const placeholderSvg =
+        'data:image/svg+xml;utf8,' +
+        encodeURIComponent(
+            `<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">\
+                <rect width="50" height="50" fill="black" rx="8"/>\
+                <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" fill="white" font-size="12" font-family="Arial">LOGO</text>\
+            </svg>`
+        );
+    img.src = placeholderSvg;
+}
+
+// Map modal showing two locations side-by-side using Google Maps JS API (lite fallback)
+function initMapModal() {
+    // global function for onclick in HTML
+    window.showMapModal = function() {
+        const modal = document.createElement('div');
+        modal.className = 'map-modal';
+        modal.innerHTML = `
+            <div class="map-overlay">
+                <div class="map-content">
+                    <div class="map-header">
+                        <h3>근무위치 보기</h3>
+                        <button class="map-close" aria-label="닫기">&times;</button>
+                    </div>
+                    <div class="map-body">
+                        <div class="map-panel">
+                            <div class="addr-box overlay">
+                                <div class="label">주소 1</div>
+                                <div>경기도 안양시 동안구 비산동</div>
+                            </div>
+                            <div id="mapLeft" class="map-view"></div>
+                        </div>
+                        <div class="map-panel">
+                            <div class="addr-box overlay">
+                                <div class="label">주소 2</div>
+                                <div>경기도 안양시 동안구 관양동</div>
+                            </div>
+                            <div id="mapRight" class="map-view"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        const close = () => document.body.removeChild(modal);
+        modal.querySelector('.map-close').addEventListener('click', close);
+        modal.querySelector('.map-overlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) close();
+        });
+
+        // initialize maps
+        setupMaps('mapLeft', 'mapRight');
+    };
+
+    function setupMaps(leftId, rightId) {
+        const leftEl = document.getElementById(leftId);
+        const rightEl = document.getElementById(rightId);
+
+        // Coordinates (approximate) for Bisandong and Gwanyang-dong in Dongan-gu, Anyang
+        const bisan = { lat: 37.3929, lng: 126.9519 };
+        const gwanyang = { lat: 37.4016, lng: 127.0023 };
+
+        // Prefer Google Maps JS API if available (user may have API key elsewhere)
+        if (window.google && window.google.maps) {
+            const leftMap = new google.maps.Map(leftEl, { center: bisan, zoom: 14, mapTypeControl: false });
+            new google.maps.Marker({ position: bisan, map: leftMap });
+            const rightMap = new google.maps.Map(rightEl, { center: gwanyang, zoom: 14, mapTypeControl: false });
+            new google.maps.Marker({ position: gwanyang, map: rightMap });
+            return;
+        }
+
+        // Fallback: embed static map if API not loaded
+        const makeStatic = (el, center) => {
+            const src = `https://maps.google.com/maps?q=${center.lat},${center.lng}&z=14&output=embed`;
+            const iframe = document.createElement('iframe');
+            iframe.src = src;
+            iframe.width = '100%';
+            iframe.height = '100%';
+            iframe.style.border = '0';
+            iframe.loading = 'lazy';
+            el.appendChild(iframe);
+        };
+        makeStatic(leftEl, bisan);
+        makeStatic(rightEl, gwanyang);
+    }
+}
+
 // Intersection Observer for animations
 function initScrollAnimations() {
     const observerOptions = {
@@ -357,7 +494,7 @@ window.addEventListener('resize', debounce(function() {
 // Add CSS for additional styles
 const additionalStyles = `
     .header.scrolled {
-        background: rgba(255, 255, 255, 0.95);
+        background: rgba(0, 0, 0, 0.95);
         backdrop-filter: blur(10px);
     }
     
@@ -371,7 +508,7 @@ const additionalStyles = `
         top: 100%;
         left: 0;
         right: 0;
-        background: white;
+        background: #000;
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         padding: 20px;
     }

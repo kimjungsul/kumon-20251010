@@ -22,7 +22,7 @@ body {
 
 /* Header Styles */
 .header {
-    background: #fff;
+    background: #000;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     position: fixed;
     top: 0;
@@ -36,7 +36,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 15px 0;
+    padding: 10px 0;
     height: 100%;
 }
 
@@ -47,19 +47,16 @@ body {
 }
 
 .logo {
-    width: 50px;
-    height: 50px;
-    background: #e74c3c;
-    border-radius: 50%;
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    text-decoration: none;
 }
 
-.logo-text {
-    color: white;
-    font-weight: 700;
-    font-size: 18px;
+.logo img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    display: block;
 }
 
 .main-nav ul {
@@ -70,7 +67,7 @@ body {
 
 .main-nav a {
     text-decoration: none;
-    color: #333;
+    color: #fff;
     font-weight: 500;
     transition: color 0.3s;
 }
@@ -83,6 +80,28 @@ body {
     display: flex;
     align-items: center;
     gap: 20px;
+}
+
+.logo-tools {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-upload-btn {
+    background: #222;
+    color: #fff;
+    border: 1px solid #444;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.logo-data-link {
+    color: #fff;
+    font-size: 13px;
+    text-decoration: underline;
 }
 
 .utils-links {
@@ -122,6 +141,7 @@ body {
     border: none;
     font-size: 24px;
     cursor: pointer;
+    color: #fff;
 }
 
 /* Main Banner */
@@ -432,6 +452,133 @@ body {
     margin: 0 auto 20px;
     font-size: 30px;
     color: #e74c3c;
+}
+.card-icon.map {
+    background: #e8f0fe;
+}
+
+.card-icon.map i {
+    font-size: 28px;
+    color: #1a73e8;
+}
+
+/* Map Modal */
+.map-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+}
+
+.map-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.map-content {
+    background: #fff;
+    width: min(1100px, 94vw);
+    height: min(700px, 82vh);
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr;
+}
+
+.map-header {
+    padding: 14px 18px;
+    background: #f7f9fc;
+    border-bottom: 1px solid #e6ecf3;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.map-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.map-close {
+    background: none;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.map-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.map-panel {
+    position: relative;
+}
+
+.map-view {
+    position: absolute;
+    inset: 0;
+}
+
+.map-badge {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #5b8fc9;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.map-badge.right {
+    background: #e6a371;
+}
+
+/* Center separator */
+.map-separator {
+    width: 180px;
+    background: #ffffff;
+    border-left: 1px solid #e6ecf3;
+    border-right: 1px solid #e6ecf3;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px;
+}
+
+.addr-box {
+    border: 1px solid #d9e2ef;
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.4;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.addr-box .label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0f172a;
+    margin-bottom: 6px;
+}
+
+/* Overlay position for address boxes on maps */
+.addr-box.overlay {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 3;
 }
 
 .card-icon.kakao {
